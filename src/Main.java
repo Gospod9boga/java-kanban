@@ -1,6 +1,11 @@
+import task.Epic;
+import task.Subtask;
+import task.Task;
+import task.TaskStatus;
+
 public class Main {
     public static void main(String[] args) {
-        Manager manager = new Manager();
+        TaskManager manager = new TaskManager();
         // Создаём первую задачу
         Task task1 = new Task();
         task1.setId(1);
