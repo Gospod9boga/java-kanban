@@ -22,7 +22,7 @@ public class TaskManager {
     }
 
     // Получение списка всех задач
-    public ArrayList<Task> printAllTasks() {
+    public ArrayList<Task> getAllTask() {
         return new ArrayList<>(tasks.values());
     }
 
@@ -59,18 +59,13 @@ public class TaskManager {
     }
 
     // Получение списка всех эпиков
-    public ArrayList<Epic> printAllEpic() {
+    public ArrayList<Epic> getAllEpics() {
         return new ArrayList<Epic>(epics.values());
     }
 
     // Удаление всех эпиков
     public void clearAllEpic() {
-        for (Epic epic : epics.values()) {
-            for (Integer subtaskId : epic.getSubTaskIds()) {
-                subtasks.remove(subtaskId);
-            }
-        }
-
+        subtasks.clear();
         epics.clear();
     }
 
@@ -109,20 +104,26 @@ public class TaskManager {
     //создание подзадачи
     public void addSubtask(Subtask subtask) {
         subtask.setId(nextId++);
-        subtasks.put(subtask.getEpicId(), subtask);
+        subtasks.put(subtask.getId(), subtask);
 
         Epic epic = epics.get(subtask.getEpicId());
         epic.getSubTaskIds().add(subtask.getId());
 
+        updateEpicStatus(subtask.getEpicId());
+
     }
 
     // Получение списка всех подзадач
-    public ArrayList<Subtask> printAllSubtask() {
+    public ArrayList<Subtask> getAllSubtasks() {
         return new ArrayList<Subtask>(subtasks.values());
     }
 
     // Удаление всех подзадач
     public void clearAllSubtask() {
+        for (Epic epic : epics.values()) {
+            epic.getSubTaskIds().clear();
+            updateEpicStatus(epic.getId());
+        }
         subtasks.clear();
     }
 
@@ -133,6 +134,11 @@ public class TaskManager {
 
     // удаление по id подзадачу
     public void deleteSubtaskById(int id) {
+        for (Epic epic : epics.values()) {
+            if (epic.getSubTaskIds().remove(Integer.valueOf(id))) {
+                updateEpicStatus(epic.getId());
+            }
+        }
         subtasks.remove(id);
     }
 
@@ -140,15 +146,14 @@ public class TaskManager {
     public void updateTask(Subtask subtask) {
         if (subtasks.containsKey(subtask.getId())) {
             subtasks.put(subtask.getId(), subtask);
+            updateEpicStatus(subtask.getEpicId());
         } else {
-            System.out.println("Подзадача с ID " + subtask.getId() + "не найдена");
+            System.out.println("Подзадача с ID " + subtask.getId() + " не найдена");
         }
-
-
     }
 
     // получение списка подзадач определенного эпика
-    public ArrayList<Subtask> printAllSubtasksForEpic(int epicId) {
+    public ArrayList<Subtask> getAllSubtasksForEpic(int epicId) {
         ArrayList<Subtask> epicSubtasks = new ArrayList<>();
         for (Integer id : subtasks.keySet()) {
             Subtask newSubtask = subtasks.get(id);
@@ -160,10 +165,9 @@ public class TaskManager {
     }
 
     // обновление статуса
-    // не совсем понял Ваш комментарий "почему вы его нигде не вызываете"
     private void updateEpicStatus(int epicId) {
         Epic epic = epics.get(epicId);
-        ArrayList<Subtask> epicSubtasks = printAllSubtasksForEpic(epicId);
+        ArrayList<Subtask> epicSubtasks = getAllSubtasksForEpic(epicId);
 
         if (epicSubtasks.isEmpty()) {
             epic.setStatus(TaskStatus.NEW);
