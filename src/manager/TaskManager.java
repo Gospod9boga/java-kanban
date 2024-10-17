@@ -1,3 +1,5 @@
+package manager;
+
 import task.Epic;
 import task.Subtask;
 import task.Task;
@@ -23,7 +25,7 @@ public class TaskManager {
 
     // Получение списка всех задач
     public ArrayList<Task> getAllTask() {
-        return new ArrayList<>(tasks.values());
+        return new ArrayList<Task>(tasks.values());
     }
 
     // Обновление задачи
