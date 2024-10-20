@@ -1,6 +1,6 @@
 package task;
 
-public class Subtask extends Task {
+public class SubTask extends Task {
     private int epicId;
 
     // Сеттер для epicId

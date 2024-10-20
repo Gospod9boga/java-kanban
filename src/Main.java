@@ -1,12 +1,13 @@
+import manager.InMemoryTaskManager;
 import manager.TaskManager;
 import task.Epic;
-import task.Subtask;
+import task.SubTask;
 import task.Task;
 import task.TaskStatus;
 
 public class Main {
     public static void main(String[] args) {
-        TaskManager manager = new TaskManager();
+        InMemoryTaskManager manager = new InMemoryTaskManager();
 
         // Создание задач
         Task task1 = new Task();
@@ -27,7 +28,7 @@ public class Main {
         epic1.setTitle("Эпик 1");
         manager.addEpic(epic1);
 
-        Subtask subtask1 = new Subtask();
+        SubTask subtask1 = new SubTask();
         subtask1.setEpicId(epic1.getId());
         manager.addSubtask(subtask1);
         subtask1.setId(4);
@@ -35,7 +36,7 @@ public class Main {
         subtask1.setStatus(TaskStatus.NEW);
 
 
-        Subtask subtask2 = new Subtask();
+        SubTask subtask2 = new SubTask();
         subtask2.setId(5);
         subtask2.setTitle("Подзадача 2");
         subtask2.setEpicId(epic1.getId());
@@ -47,7 +48,7 @@ public class Main {
         epic2.setTitle("Эпик 2");
         manager.addEpic(epic2);
 
-        Subtask subtask3 = new Subtask();
+        SubTask subtask3 = new SubTask();
         subtask3.setId(7);
         subtask3.setTitle("Подзадача 3");
         subtask3.setEpicId(epic2.getId());
@@ -76,5 +77,35 @@ public class Main {
         System.out.println("После удаления:");
         System.out.println("Задачи: " + manager.getAllTask());
         System.out.println("Эпики: " + manager.getAllEpics());
+
+        printAllTasks(manager);
+
     }
+
+    private static void printAllTasks(TaskManager manager) {
+        System.out.println("Задачи:");
+        for (Task task : manager.getAllTask()) {
+            System.out.println(task);
+        }
+
+        System.out.println("Эпики:");
+        for (Epic epic : manager.getAllEpics()) {
+            System.out.println(epic);
+
+            for (SubTask subtask : manager.getAllSubtasksForEpic(epic.getId())) {
+                System.out.println("--> " + subtask);
+            }
+        }
+
+        System.out.println("Подзадачи:");
+        for (SubTask subtask : manager.getAllSubtasks()) {
+            System.out.println(subtask);
+        }
+
+        System.out.println("История:");
+        for (Task task : manager.getHistory()) {
+            System.out.println(task);
+        }
+    }
+
 }
