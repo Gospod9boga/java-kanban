@@ -4,14 +4,14 @@ import task.Epic;
 import task.SubTask;
 import task.Task;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public interface TaskManager {
     //создание задачи
     void addTask(Task task);
 
     // Получение списка всех задач
-    ArrayList<Task> getAllTask();
+    List<Task> getAllTask();
 
     // Обновление задачи
     void updateTask(Task task);
@@ -29,7 +29,7 @@ public interface TaskManager {
     void addEpic(Epic epic);
 
     // Получение списка всех эпиков
-    ArrayList<Epic> getAllEpics();
+    List<Epic> getAllEpics();
 
     // Удаление всех эпиков
     void clearAllEpic();
@@ -47,7 +47,7 @@ public interface TaskManager {
     void addSubtask(SubTask subtask);
 
     // Получение списка всех подзадач
-    ArrayList<SubTask> getAllSubtasks();
+    List<SubTask> getAllSubtasks();
 
     // Удаление всех подзадач
     void clearAllSubtask();
@@ -62,10 +62,10 @@ public interface TaskManager {
     void updateTask(SubTask subtask);
 
     // получение списка подзадач определенного эпика
-    ArrayList<SubTask> getAllSubtasksForEpic(int epicId);
+    List<SubTask> getAllSubtasksForEpic(int epicId);
 
 
     // Возврат последних 10 просмотренных Задач
-    ArrayList<Task> getHistory();
+    List<Task> getHistory();
 
 }
