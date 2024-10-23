@@ -37,6 +37,8 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void updateTask(Task task) {
         if (tasks.containsKey(task.getId())) {
+            // Сохраняем старую задачу в истории
+            historyManager.add(tasks.get(task.getId())); // Добавьте это, чтобы сохранить старую задачу
             tasks.put(task.getId(), task);
         } else {
             System.out.println("Задача с ID " + task.getId() + " не найдена.");
