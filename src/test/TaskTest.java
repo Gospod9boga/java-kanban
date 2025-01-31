@@ -37,7 +37,7 @@ class TaskTest {
 
 
     @org.junit.jupiter.api.Test
-    void TasksTest1() {
+    void tasksTest1() {
         assertEquals(task1, task2);
         assertNotEquals(task1, task3);
     }
