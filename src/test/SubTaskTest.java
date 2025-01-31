@@ -3,12 +3,10 @@ package test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import manager.InMemoryTaskManager;
-import manager.TaskManager;
-import manager.TaskManager;
+
 import task.Epic;
 import task.SubTask;
-import task.Task;
-import manager.Managers;
+
 import task.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
 
