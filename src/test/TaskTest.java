@@ -4,9 +4,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import manager.InMemoryTaskManager;
 import task.Task;
-import manager.Managers;
+
 import task.TaskStatus;
-import org.junit.jupiter.api.Test;
+
 import org.junit.jupiter.api.BeforeEach;
 
 class TaskTest {
