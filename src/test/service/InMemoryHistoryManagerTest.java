@@ -18,7 +18,7 @@ public class InMemoryHistoryManagerTest {
     @BeforeEach
     void setUp() {
 
-        historyManager = new InMemoryHistoryManager(10);
+        historyManager = new InMemoryHistoryManager();
 
     }
 
@@ -33,21 +33,15 @@ public class InMemoryHistoryManagerTest {
         historyManager.add(task1);
 
         assertEquals(1, historyManager.getHistory().size());
+
+        Task retrievedTask = historyManager.getHistory().get(0);
+        assertEquals(task1.getId(), retrievedTask.getId());
+        assertEquals(task1.getTitle(), retrievedTask.getTitle());
+        assertEquals(task1.getDescription(), retrievedTask.getDescription());
+        assertEquals(task1.getStatus(), retrievedTask.getStatus());
     }
 
-    @Test
-    void testAddMoreThanMaxHistorySize() {
-        for (int i = 1; i <= 11; i++) {
-            Task task = new Task();
-            task.setId(i);
-            task.setTitle("Title " + i);
-            task.setDescription("Description " + i);
-            task.setStatus(TaskStatus.NEW);
-            historyManager.add(task);
-        }
 
-        assertEquals(10, historyManager.getHistory().size());
-    }
 
     @Test
     public void testUpdateTask() {
@@ -58,25 +52,25 @@ public class InMemoryHistoryManagerTest {
         task1.setTitle("Title 1");
         task1.setDescription("Description 1");
         task1.setStatus(TaskStatus.NEW);
-        manager.addTask(task1); // Добавляем задачу
+        manager.addTask(task1);
 
-        // Обновляем задачу
+
         Task updatedTask = new Task();
         updatedTask.setId(1);
         updatedTask.setTitle("Title 1");
         updatedTask.setDescription("Updated Description");
         updatedTask.setStatus(TaskStatus.NEW);
-        manager.updateTask(updatedTask); // Обновляем задачу
+        manager.updateTask(updatedTask);
 
-        // Проверяем, что задача обновлена
         Task retrievedTask = manager.getTask(1);
         assertEquals("Updated Description", retrievedTask.getDescription());
 
-        // Проверяем историю
+
         List<Task> history = manager.getHistory();
-        assertEquals(2, history.size()); // Проверяем, что сохранено две версии
-        assertEquals("Description 1", history.get(0).getDescription()); // Предыдущая версия
-        assertEquals("Updated Description", history.get(1).getDescription()); // Текущая версия
+        assertEquals(1, history.size());
+
+
+        assertEquals("Updated Description", history.get(0).getDescription());
     }
 
     @Test
@@ -93,6 +87,9 @@ public class InMemoryHistoryManagerTest {
         // Проверяем, что история не изменилась
         assertEquals(0, manager.getHistory().size());
     }
+
+
+
 }
 
 

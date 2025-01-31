@@ -21,7 +21,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     //создание задачи
     @Override
-    public void addTask(Task task) {
+    public  void addTask(Task task) {
         task.setId(nextId++);
         tasks.put(task.getId(), task);
 

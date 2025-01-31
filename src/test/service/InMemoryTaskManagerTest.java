@@ -95,7 +95,70 @@ public class InMemoryTaskManagerTest {
         assertEquals(task1.getDescription(), addedTask.getDescription(), "Task descriptions should match");
 
     }
+    @Test
+    void testUpdateTaskFieldsImpactOnManager() {
+        InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        Task task1 = new Task();
+        task1.setId(1);
+        task1.setTitle("Original Title");
+        task1.setDescription("Original Description");
+        task1.setStatus(TaskStatus.NEW);
+        taskManager.addTask(task1);
+
+        // Изменяем поля задачи
+        task1.setTitle("Updated Title");
+        task1.setDescription("Updated Description");
+
+        // Обновляем задачу в менеджере
+        taskManager.updateTask(task1);
+
+        // Проверяем, что изменения отразились в менеджере
+        Task updatedTask = taskManager.getTask(task1.getId());
+        assertEquals("Updated Title", updatedTask.getTitle());
+        assertEquals("Updated Description", updatedTask.getDescription());
+    }
+
+    @Test
+    void testRemoveTaskUpdatesReferences() {
+        InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        Task task1 = new Task();
+        task1.setId(1);
+        task1.setTitle("Task to Remove");
+        task1.setDescription("Description to Remove");
+        taskManager.addTask(task1);
+
+        // Удаляем задачу
+        taskManager.deleteTaskById(1);
+
+        // Проверяем, что задача была удалена
+        assertNull(taskManager.getTask(1), "Task should be removed");
+    }
+
+    @Test
+    void testRemoveSubtaskUpdatesEpic() {
+        InMemoryTaskManager taskManager = new InMemoryTaskManager();
+        Epic epic = new Epic();
+        epic.setId(1);
+        epic.setTitle("Epic Title");
+        epic.setDescription("Epic Description");
+        taskManager.addTask(epic);
+
+        SubTask subtask = new SubTask();
+        subtask.setId(2);
+        subtask.setTitle("Subtask Title");
+        subtask.setDescription("Subtask Description");
+        subtask.setEpicId(epic.getId());
+        taskManager.addTask(subtask);
+
+        // Удаляем подзадачу
+        taskManager.deleteSubtaskById(2);
+
+        // Проверяем, что подзадача была удалена
+        assertNull(taskManager.getSubtask(2), "Subtask should be removed");
+    }
 }
+
+
 
 
 
