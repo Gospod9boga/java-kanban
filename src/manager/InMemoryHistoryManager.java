@@ -39,17 +39,16 @@ public class InMemoryHistoryManager implements HistoryManager {
                 remove(taskId);
             }
             Node newNode = new Node(task);
-            {
-                if (head == null) {
-                    head = newNode;
-                    tail = newNode;
-                } else {
-                    tail.setNext(newNode);
-                    newNode.setPrevious(tail);
-                    tail = newNode;
-                }
-                idToNode.put(taskId, newNode);
+
+            if (head == null) {
+                head = newNode;
+                tail = newNode;
+            } else {
+                tail.setNext(newNode);
+                newNode.setPrevious(tail);
+                tail = newNode;
             }
+            idToNode.put(taskId, newNode);
 
         }
 
