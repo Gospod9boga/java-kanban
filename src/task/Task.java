@@ -26,13 +26,14 @@ public class Task {
         return this.description;
     }
 
-    public void setId(int id){
-        this.id=id;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getId(){
+    public int getId() {
         return this.id;
     }
+
     // Геттер для статуса
     public TaskStatus getStatus() {
         return status;
@@ -42,6 +43,7 @@ public class Task {
     public void setStatus(TaskStatus status) {
         this.status = status;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

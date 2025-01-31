@@ -15,7 +15,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     @Override
     public void remove(int taskId) {
-        if(historyList.idToNode.containsKey(taskId)){
+        if (historyList.idToNode.containsKey(taskId)) {
             historyList.removeNode(historyList.idToNode.get(taskId));
         }
 

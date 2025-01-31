@@ -21,7 +21,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     //создание задачи
     @Override
-    public  void addTask(Task task) {
+    public void addTask(Task task) {
         task.setId(nextId++);
         tasks.put(task.getId(), task);
 
@@ -57,7 +57,8 @@ public class InMemoryTaskManager implements TaskManager {
         Task task = tasks.get(id);
         if (task != null) {
             historyManager.add(task);
-        }        return tasks.get(id);
+        }
+        return tasks.get(id);
     }
 
     // удаление по id задачи
@@ -201,9 +202,10 @@ public class InMemoryTaskManager implements TaskManager {
         }
         return epicSubtasks;
     }
-// получение списка 10 последний задач
+
+    // получение списка 10 последний задач
     @Override
-    public List<Task> getHistory(){
+    public List<Task> getHistory() {
         return historyManager.getHistory();
     }
 
@@ -237,7 +239,6 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
     }
-
 
 
 }

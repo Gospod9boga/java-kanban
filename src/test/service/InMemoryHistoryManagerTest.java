@@ -42,7 +42,6 @@ public class InMemoryHistoryManagerTest {
     }
 
 
-
     @Test
     public void testUpdateTask() {
 
@@ -87,7 +86,6 @@ public class InMemoryHistoryManagerTest {
         // Проверяем, что история не изменилась
         assertEquals(0, manager.getHistory().size());
     }
-
 
 
 }

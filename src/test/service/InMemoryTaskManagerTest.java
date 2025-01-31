@@ -95,6 +95,7 @@ public class InMemoryTaskManagerTest {
         assertEquals(task1.getDescription(), addedTask.getDescription(), "Task descriptions should match");
 
     }
+
     @Test
     void testUpdateTaskFieldsImpactOnManager() {
         InMemoryTaskManager taskManager = new InMemoryTaskManager();
