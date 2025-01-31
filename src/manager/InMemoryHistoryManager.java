@@ -5,7 +5,7 @@ import task.Task;
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private final modifiedLinkedList historyList = new modifiedLinkedList();
+    private final ModifiedLinkedList historyList = new ModifiedLinkedList();
 
 
     @Override
@@ -26,7 +26,7 @@ public class InMemoryHistoryManager implements HistoryManager {
         return historyList.getTask();
     }
 
-    private class modifiedLinkedList {
+    private class ModifiedLinkedList {
         private Node head;
 
         private Node tail;
