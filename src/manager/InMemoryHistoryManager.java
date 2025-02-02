@@ -1,12 +1,9 @@
 package manager;
-
 import task.Task;
-
 import java.util.*;
 
 public class InMemoryHistoryManager implements HistoryManager {
     private final ModifiedLinkedList historyList = new ModifiedLinkedList();
-
 
     @Override
     public void add(Task task) {
@@ -18,7 +15,6 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (historyList.idToNode.containsKey(taskId)) {
             historyList.removeNode(historyList.idToNode.get(taskId));
         }
-
     }
 
     @Override
@@ -28,9 +24,7 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private class ModifiedLinkedList {
         private Node head;
-
         private Node tail;
-
         private Map<Integer, Node> idToNode = new HashMap<>();
 
         public void linkLast(Task task) {

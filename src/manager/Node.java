@@ -1,12 +1,10 @@
 package manager;
-
 import task.Task;
 
 class Node {
     Node previous;
     Node next;
     Task task;
-
 
     Node(Task task) {
         this.task = task;
@@ -37,5 +35,4 @@ class Node {
     Node getPrevious() {
         return previous;
     }
-
 }

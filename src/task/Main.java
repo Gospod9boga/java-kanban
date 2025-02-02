@@ -1,9 +1,8 @@
+package task;
+
 import manager.InMemoryTaskManager;
 import manager.TaskManager;
-import task.Epic;
-import task.SubTask;
-import task.Task;
-import task.TaskStatus;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -22,7 +21,6 @@ public class Main {
         task2.setStatus(TaskStatus.NEW);
         manager.addTask(task2);
 
-
         Epic epic1 = new Epic();
         epic1.setId(3);
         epic1.setTitle("Эпик 1");
@@ -34,7 +32,6 @@ public class Main {
         subtask1.setId(4);
         subtask1.setTitle("Подзадача 1");
         subtask1.setStatus(TaskStatus.NEW);
-
 
         SubTask subtask2 = new SubTask();
         subtask2.setId(5);
@@ -55,31 +52,25 @@ public class Main {
         subtask3.setStatus(TaskStatus.IN_PROGRESS);
         manager.addSubtask(subtask3);
 
-
         System.out.println("Задачи: " + manager.getAllTask());
         System.out.println("Эпики: " + manager.getAllEpics());
         System.out.println("Подзадачи: " + manager.getAllSubtasks());
 
-
         task1.setStatus(TaskStatus.DONE);
         subtask1.setStatus(TaskStatus.IN_PROGRESS);
-
 
         System.out.println("Обновленные задачи:");
         System.out.println("Задача 1: " + task1.getStatus());
         System.out.println("Эпик 1: " + epic1.getStatus());
 
-
         manager.deleteTaskById(task1.getId());
         manager.deleteEpicById(epic2.getId());
-
 
         System.out.println("После удаления:");
         System.out.println("Задачи: " + manager.getAllTask());
         System.out.println("Эпики: " + manager.getAllEpics());
 
         printAllTasks(manager);
-
     }
 
     private static void printAllTasks(TaskManager manager) {
@@ -107,5 +98,4 @@ public class Main {
             System.out.println(task);
         }
     }
-
 }

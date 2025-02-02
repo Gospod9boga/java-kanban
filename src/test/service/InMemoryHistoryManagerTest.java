@@ -1,15 +1,11 @@
 package test.service;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 import manager.InMemoryHistoryManager;
 import manager.InMemoryTaskManager;
 import org.junit.jupiter.api.Test;
 import task.Task;
-
 import task.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
-
 import java.util.List;
 
 public class InMemoryHistoryManagerTest {
@@ -40,7 +36,6 @@ public class InMemoryHistoryManagerTest {
         assertEquals(task1.getDescription(), retrievedTask.getDescription());
         assertEquals(task1.getStatus(), retrievedTask.getStatus());
     }
-
 
     @Test
     public void testUpdateTask() {
@@ -86,8 +81,6 @@ public class InMemoryHistoryManagerTest {
         // Проверяем, что история не изменилась
         assertEquals(0, manager.getHistory().size());
     }
-
-
 }
 
 

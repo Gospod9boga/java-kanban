@@ -1,16 +1,11 @@
 package test;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 import manager.InMemoryTaskManager;
-
 import org.junit.jupiter.api.Test;
 import task.Epic;
 import task.SubTask;
-
 import task.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
-
 import java.util.List;
 
 class EpicTest {
@@ -67,9 +62,7 @@ class EpicTest {
         subtask2.setTitle("Subtask 2");
         taskManager.addSubtask(subtask2);
 
-
         taskManager.deleteSubtaskById(subtask1.getId());
-
 
         List<SubTask> allSubtasks = taskManager.getAllSubtasks();
         assertEquals(1, allSubtasks.size(), "В диспетчере задач должна быть еще одна подзадача");

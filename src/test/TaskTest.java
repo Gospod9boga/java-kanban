@@ -1,12 +1,9 @@
 package test;
-
 import static org.junit.jupiter.api.Assertions.*;
-
 import manager.InMemoryTaskManager;
+import org.junit.jupiter.api.Test;
 import task.Task;
-
 import task.TaskStatus;
-
 import org.junit.jupiter.api.BeforeEach;
 
 class TaskTest {
@@ -35,14 +32,13 @@ class TaskTest {
         task3.setStatus(TaskStatus.DONE);
     }
 
-
     @org.junit.jupiter.api.Test
     void tasksTest1() {
         assertEquals(task1, task2);
         assertNotEquals(task1, task3);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void testAddAndGetTask() {
         InMemoryTaskManager taskManager = new InMemoryTaskManager();
         taskManager.addTask(task1);
