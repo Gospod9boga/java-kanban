@@ -10,7 +10,6 @@ import task.SubTask;
 import task.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
 import java.util.List;
 
 public class InMemoryTaskManagerTest {
@@ -21,7 +20,6 @@ public class InMemoryTaskManagerTest {
     @BeforeEach
     void setUp() {
         taskManager = new InMemoryTaskManager();
-
     }
 
     @Test
@@ -88,7 +86,6 @@ public class InMemoryTaskManagerTest {
         assertNotNull(addedTask, "Task should be added");
         assertEquals(task1.getTitle(), addedTask.getTitle(), "Task titles should match");
         assertEquals(task1.getDescription(), addedTask.getDescription(), "Task descriptions should match");
-
     }
 
     @Test

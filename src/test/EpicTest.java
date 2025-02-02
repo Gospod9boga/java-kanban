@@ -67,7 +67,5 @@ class EpicTest {
         List<SubTask> allSubtasks = taskManager.getAllSubtasks();
         assertEquals(1, allSubtasks.size(), "В диспетчере задач должна быть еще одна подзадача");
         assertFalse(allSubtasks.contains(subtask1), "Удаленная подзадача не должна присутствовать в списке всех подзадач.");
-
-
     }
 }

@@ -13,9 +13,7 @@ public class InMemoryHistoryManagerTest {
 
     @BeforeEach
     void setUp() {
-
         historyManager = new InMemoryHistoryManager();
-
     }
 
     @Test
@@ -48,7 +46,6 @@ public class InMemoryHistoryManagerTest {
         task1.setStatus(TaskStatus.NEW);
         manager.addTask(task1);
 
-
         Task updatedTask = new Task();
         updatedTask.setId(1);
         updatedTask.setTitle("Title 1");
@@ -59,10 +56,8 @@ public class InMemoryHistoryManagerTest {
         Task retrievedTask = manager.getTask(1);
         assertEquals("Updated Description", retrievedTask.getDescription());
 
-
         List<Task> history = manager.getHistory();
         assertEquals(1, history.size());
-
 
         assertEquals("Updated Description", history.get(0).getDescription());
     }

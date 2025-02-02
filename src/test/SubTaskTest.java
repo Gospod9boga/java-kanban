@@ -61,6 +61,4 @@ class SubTaskTest {
 
         assertEquals(TaskStatus.IN_PROGRESS, retrievedEpic.getStatus(), "Epic status should be IN_PROGRESS after adding subtask with IN_PROGRESS status");
     }
-
-
 }
