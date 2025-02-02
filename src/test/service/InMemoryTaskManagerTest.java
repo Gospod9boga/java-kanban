@@ -149,6 +149,7 @@ public class InMemoryTaskManagerTest {
         // Проверяем, что подзадача была удалена
         assertNull(taskManager.getSubtask(2), "Subtask should be removed");
     }
+
     @Test
     void addToHistory_TheSameTaskMultipleTimes_noDuplicatesInHistory() {
         taskManager = new InMemoryTaskManager();
@@ -170,6 +171,7 @@ public class InMemoryTaskManagerTest {
         assertEquals(1, history.size()); // Должна быть только одна запись в истории
         assertEquals(task1.getId(), history.get(0).getId());
     }
+
     @Test
     void removeTask_itRemovedFromHistory() {
         taskManager = new InMemoryTaskManager();
