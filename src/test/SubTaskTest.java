@@ -3,12 +3,8 @@ package test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import manager.InMemoryTaskManager;
-import manager.TaskManager;
-import manager.TaskManager;
 import task.Epic;
 import task.SubTask;
-import task.Task;
-import manager.Managers;
 import task.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -20,29 +16,10 @@ class SubTaskTest {
 
     @BeforeEach
     void setUp() {
-        epic1 = new Epic();
-        epic1.setId(1);
-        epic1.setTitle("Epic Title 4");
-        epic1.setDescription("Epic Description 1");
-        epic1.setStatus(TaskStatus.NEW);
-
-        subTask1 = new SubTask();
-        subTask1.setId(1);
-        subTask1.setTitle("SubTask Title 1");
-        subTask1.setDescription("SubTask Description 1");
-        subTask1.setStatus(TaskStatus.NEW);
-
-        subTask2 = new SubTask();
-        subTask2.setId(2);
-        subTask2.setTitle("SubTask Title 2");
-        subTask2.setDescription("SubTask Description 2");
-        subTask2.setStatus(TaskStatus.IN_PROGRESS);
-
-        subTask3 = new SubTask();
-        subTask3.setId(3);
-        subTask3.setTitle("SubTask Title 3");
-        subTask3.setDescription("SubTask Description 3");
-        subTask3.setStatus(TaskStatus.DONE);
+        epic1 = new Epic(1, "Epic Title 4", TaskStatus.NEW, "Epic Description 1");
+        subTask1 = new SubTask(1, "SubTask Title 1", TaskStatus.NEW, "SubTask Description 1", epic1.getId());
+        subTask2 = new SubTask(2, "SubTask Title 2", TaskStatus.IN_PROGRESS, "SubTask Description 2", epic1.getId());
+        subTask3 = new SubTask(3, "SubTask Title 3", TaskStatus.DONE, "SubTask Description 3", epic1.getId());
     }
 
     @org.junit.jupiter.api.Test

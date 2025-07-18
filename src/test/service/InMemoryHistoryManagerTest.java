@@ -6,7 +6,6 @@ import manager.InMemoryHistoryManager;
 import manager.InMemoryTaskManager;
 import org.junit.jupiter.api.Test;
 import task.Task;
-import manager.Managers;
 import task.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
 
@@ -26,7 +25,7 @@ public class InMemoryHistoryManagerTest {
     void testAdd() {
         Task task1 = new Task();
         task1.setId(1);
-        task1.setTitle("Title 1");
+        task1.setName("Title 1");
         task1.setDescription("Description 1");
         task1.setStatus(TaskStatus.NEW);
 
@@ -40,7 +39,7 @@ public class InMemoryHistoryManagerTest {
         for (int i = 1; i <= 11; i++) {
             Task task = new Task();
             task.setId(i);
-            task.setTitle("Title " + i);
+            task.setName("Title " + i);
             task.setDescription("Description " + i);
             task.setStatus(TaskStatus.NEW);
             historyManager.add(task);
@@ -55,7 +54,7 @@ public class InMemoryHistoryManagerTest {
         InMemoryTaskManager manager = new InMemoryTaskManager();
         Task task1 = new Task();
         task1.setId(1);
-        task1.setTitle("Title 1");
+        task1.setName("Title 1");
         task1.setDescription("Description 1");
         task1.setStatus(TaskStatus.NEW);
         manager.addTask(task1); // Добавляем задачу
@@ -63,7 +62,7 @@ public class InMemoryHistoryManagerTest {
         // Обновляем задачу
         Task updatedTask = new Task();
         updatedTask.setId(1);
-        updatedTask.setTitle("Title 1");
+        updatedTask.setName("Title 1");
         updatedTask.setDescription("Updated Description");
         updatedTask.setStatus(TaskStatus.NEW);
         manager.updateTask(updatedTask); // Обновляем задачу
@@ -85,7 +84,7 @@ public class InMemoryHistoryManagerTest {
         // Попытка обновить несуществующую задачу
         Task updatedTask = new Task();
         updatedTask.setId(1);
-        updatedTask.setTitle("Title 1");
+        updatedTask.setName("Title 1");
         updatedTask.setDescription("Updated Description");
         updatedTask.setStatus(TaskStatus.NEW);
         manager.updateTask(updatedTask); // Обновляем несуществующую задачу

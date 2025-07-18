@@ -16,8 +16,16 @@ public class InMemoryTaskManager implements TaskManager {
     private HashMap<Integer, SubTask> subtasks = new HashMap<>();
     private HashMap<Integer, Epic> epics = new HashMap<>();
     private HistoryManager historyManager = Managers.getDefaultHistory();
+
+    public int getNextId() {
+        return nextId;
+    }
+
     private int nextId = 1;
 
+    public void setNextId(int nextId) {
+        this.nextId = nextId;
+    }
 
     //создание задачи
     @Override

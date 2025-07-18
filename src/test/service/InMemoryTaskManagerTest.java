@@ -3,14 +3,14 @@ package test.service;
 import static org.junit.jupiter.api.Assertions.*;
 
 import task.Epic;
-import manager.InMemoryHistoryManager;
 import manager.InMemoryTaskManager;
 import org.junit.jupiter.api.Test;
 import task.Task;
 import task.SubTask;
-import manager.Managers;
 import task.TaskStatus;
 import org.junit.jupiter.api.BeforeEach;
+
+import java.util.ArrayList;
 
 public class InMemoryTaskManagerTest {
 
@@ -22,23 +22,9 @@ public class InMemoryTaskManagerTest {
     @Test
     void testAddAndFindTasks() {
         InMemoryTaskManager taskManager = new InMemoryTaskManager();
-        Task task1 = new Task();
-        task1.setId(1);
-        task1.setTitle("Title 1");
-        task1.setDescription("Description 1");
-        task1.setStatus(TaskStatus.NEW);
-
-        Epic epic1 = new Epic();
-        epic1.setId(2);
-        epic1.setTitle("Epic 1");
-        epic1.setDescription("Epic Description 1");
-
-        SubTask subtask1 = new SubTask();
-        subtask1.setId(3);
-        subtask1.setTitle("Subtask 1");
-        subtask1.setDescription("Subtask Description 1");
-        subtask1.setStatus(TaskStatus.NEW);
-        subtask1.setEpicId(2);
+        Task task1 = new Task(1, "Title 1", TaskStatus.NEW, "Description 1");
+        Epic epic1 = new Epic(2, "Epic 1", TaskStatus.NEW, "Description 1", new ArrayList<>());
+        SubTask subtask1 = new SubTask(3, "Subtask 1", TaskStatus.NEW, "Subtask Description 1", 2);
 
 
         taskManager.addTask(task1);
@@ -59,20 +45,16 @@ public class InMemoryTaskManagerTest {
         InMemoryTaskManager taskManager = new InMemoryTaskManager();
         Task task1 = new Task();
         task1.setId(1);
-        task1.setTitle("Task with ID 1");
+        task1.setName("Task with ID 1");
         task1.setDescription("Description 1");
-
 
         taskManager.addTask(task1);
 
-
         Task task2 = new Task();
-        task2.setTitle("Task with generated ID");
+        task2.setName("Task with generated ID");
         task2.setDescription("Description 2");
 
-
         taskManager.addTask(task2);
-
 
         assertEquals(task1, taskManager.getTask(1));
         assertNotNull(taskManager.getTask(2));
@@ -84,14 +66,14 @@ public class InMemoryTaskManagerTest {
         InMemoryTaskManager taskManager = new InMemoryTaskManager();
         Task task1 = new Task();
         task1.setId(1);
-        task1.setTitle("Task with ID 1");
+        task1.setName("Task with ID 1");
         task1.setDescription("Description 1");
 
         taskManager.addTask(task1);
 
         Task addedTask = taskManager.getTask(task1.getId());
         assertNotNull(addedTask, "Task should be added");
-        assertEquals(task1.getTitle(), addedTask.getTitle(), "Task titles should match");
+        assertEquals(task1.getName(), addedTask.getName(), "Task titles should match");
         assertEquals(task1.getDescription(), addedTask.getDescription(), "Task descriptions should match");
 
     }

@@ -1,19 +1,41 @@
 package task;
 
 public class Task {
-    private String title;
-    private String description;
     private int id;
+    private TaskType type;
+    private String name;
     private TaskStatus status;
+    private String description;
 
-    // сеттер для  title
-    public void setTitle(String title) {
-        this.title = title;
+
+
+    public Task(int id, String name, TaskStatus status, String description) {
+        this.id = id;
+        this.type = TaskType.TASK;
+        this.name = name;
+        this.status = status;
+        this.description = description;
     }
 
-    // геттер для  title
-    public String getTitle() {
-        return this.title;
+    public  Task(){
+
+    }
+
+    public TaskType getType() {
+        return type;
+    }
+
+    public void setType(TaskType type) {
+        this.type = type;
+    }
+    // сеттер для name
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    // геттер для  name
+    public String getName() {
+        return this.name;
     }
 
     // сеттер для  description
@@ -59,7 +81,7 @@ public class Task {
     public String toString() {
         return "Задача{" +
                 "ID=" + id +
-                ", название='" + title + '\'' +
+                ", название='" + name + '\'' +
                 ", описание='" + description + '\'' +
                 ", статус=" + status +
                 '}';
