@@ -1,16 +1,18 @@
 package test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import manager.InMemoryTaskManager;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import task.Task;
 import task.TaskStatus;
-import org.junit.jupiter.api.BeforeEach;
 
-class taskTest {
-    Task task1;
-    Task task2;
-    Task task3;
+class TaskTest {  // Имя класса с заглавной буквы
+    private Task task1;
+    private Task task2;
+    private Task task3;
 
     @BeforeEach
     void setUp() {
@@ -19,14 +21,13 @@ class taskTest {
         task3 = new Task(2, "Title 3", TaskStatus.DONE, "Description 3");
     }
 
-
-    @org.junit.jupiter.api.Test
-    void tasksTest1() {
+    @Test
+    void tasksTest1() {  // Имя метода начинается с маленькой буквы
         assertEquals(task1, task2);
         assertNotEquals(task1, task3);
     }
 
-    @org.junit.jupiter.api.Test
+    @Test
     void testAddAndGetTask() {
         InMemoryTaskManager taskManager = new InMemoryTaskManager();
         taskManager.addTask(task1);
