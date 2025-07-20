@@ -1,6 +1,7 @@
 package task;
 
 import java.util.ArrayList;
+
 public class Epic extends Task {
 
     private ArrayList<Integer> subTaskIds = new ArrayList<>();
@@ -16,7 +17,7 @@ public class Epic extends Task {
         this.subTaskIds = new ArrayList<>();
     }
 
-    public Epic(){
+    public Epic() {
 
     }
 

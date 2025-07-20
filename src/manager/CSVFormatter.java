@@ -12,9 +12,7 @@ public class CSVFormatter {
             throw new IllegalStateException("Task type cannot be null");
         }
         StringBuilder sb = new StringBuilder();
-        sb.append(task.getId()).append(",").append(task.getType()).append(",").
-                append(task.getName()).append(",").append(task.getStatus()).
-                append(",").append(task.getDescription());
+        sb.append(task.getId()).append(",").append(task.getType()).append(",").append(task.getName()).append(",").append(task.getStatus()).append(",").append(task.getDescription());
         if (task.getType() == TaskType.SUBTASK) {
             sb.append(",").append(((SubTask) task).getEpicId());
         }

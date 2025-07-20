@@ -8,7 +8,6 @@ public class Task {
     private String description;
 
 
-
     public Task(int id, String name, TaskStatus status, String description) {
         this.id = id;
         this.type = TaskType.TASK;
@@ -17,7 +16,7 @@ public class Task {
         this.description = description;
     }
 
-    public  Task(){
+    public Task() {
 
     }
 
@@ -28,6 +27,7 @@ public class Task {
     public void setType(TaskType type) {
         this.type = type;
     }
+
     // сеттер для name
     public void setName(String name) {
         this.name = name;
@@ -48,13 +48,14 @@ public class Task {
         return this.description;
     }
 
-    public void setId(int id){
-        this.id=id;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public int getId(){
+    public int getId() {
         return this.id;
     }
+
     // Геттер для статуса
     public TaskStatus getStatus() {
         return status;
@@ -64,6 +65,7 @@ public class Task {
     public void setStatus(TaskStatus status) {
         this.status = status;
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;

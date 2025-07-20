@@ -4,7 +4,6 @@ public class SubTask extends Task {
     private int epicId;
 
 
-
     public SubTask(int id, String name, TaskStatus status, String description, int epicId) {
         super(id, name, status, description);
         this.setType(TaskType.SUBTASK);
@@ -15,7 +14,7 @@ public class SubTask extends Task {
         super(id, name, status, description);
     }
 
-    public SubTask(){
+    public SubTask() {
 
     }
 
