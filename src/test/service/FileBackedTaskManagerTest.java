@@ -9,9 +9,8 @@ import java.io.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class FileBackedTaskManagerTest {
+class FileBackedTaskManagerTest extends AbstractTaskManagerTest {
     private File tempFile;
-    private FileBackedTaskManager manager;
 
     @BeforeEach
     void setUp() throws IOException {
@@ -26,7 +25,7 @@ class FileBackedTaskManagerTest {
 
     @Test
     void testSaveAndLoadEmptyFile() {
-        manager.save();
+        ((FileBackedTaskManager) manager).save();
 
         FileBackedTaskManager loadedManager = FileBackedTaskManager.loadFromFile(tempFile);
 
@@ -37,7 +36,6 @@ class FileBackedTaskManagerTest {
 
     @Test
     void testSaveAndLoadTasks() {
-        // Добавляем задачи
         Task task = new Task(1, "Task 1", TaskStatus.NEW, "Description");
         Epic epic = new Epic(2, "Epic 1", TaskStatus.NEW, "Epic Description");
         SubTask subTask = new SubTask(3, "SubTask 1", TaskStatus.DONE, "SubTask Description", 2);
@@ -65,3 +63,4 @@ class FileBackedTaskManagerTest {
         assertThrows(ManagerSaveException.class, () -> FileBackedTaskManager.loadFromFile(nonExistentFile));
     }
 }
+
