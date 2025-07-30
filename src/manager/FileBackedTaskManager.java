@@ -34,11 +34,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
 
                 if (task instanceof Epic) {
-                    taskManager.addEpic((Epic) task);
+                    taskManager.epics.put(task.getId(), (Epic) task);
                 } else if (task instanceof SubTask) {
-                    taskManager.addSubtask((SubTask) task);
+                    taskManager.subtasks.put(task.getId(), (SubTask) task);
                 } else {
-                    taskManager.addTask(task);
+                    taskManager.tasks.put(task.getId(), task);
                 }
             }
 
@@ -74,15 +74,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Task getTask(int id) {
-        Task task = super.getTask(id);
-        if (task != null) {
-            save();
-        }
-        return task;
-    }
-
-    @Override
     public void deleteTaskById(int id) {
         super.deleteTaskById(id);
         save();
@@ -98,15 +89,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     public void clearAllEpic() {
         super.clearAllEpic();
         save();
-    }
-
-    @Override
-    public Epic getEpic(int id) {
-        Epic epic = super.getEpic(id);
-        if (epic != null) {
-            save();
-        }
-        return epic;
     }
 
     @Override
@@ -134,15 +116,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     @Override
-    public SubTask getSubtask(int id) {
-        SubTask subTask = super.getSubtask(id);
-        if (subTask != null) {
-            save();
-        }
-        return subTask;
-    }
-
-    @Override
     public void deleteSubtaskById(int id) {
         super.deleteSubtaskById(id);
         save();
@@ -154,7 +127,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
-    public void save() {
+    private void save() {
         try (BufferedWriter writer = new BufferedWriter((new FileWriter(file)))) {
             writer.write(CSVFormatter.getHeader());
             writer.newLine();
