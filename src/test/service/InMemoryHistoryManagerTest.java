@@ -20,7 +20,7 @@ public class InMemoryHistoryManagerTest {
     void testAdd() {
         Task task1 = new Task();
         task1.setId(1);
-        task1.setTitle("Title 1");
+        task1.setName("Title 1");
         task1.setDescription("Description 1");
         task1.setStatus(TaskStatus.NEW);
 
@@ -30,7 +30,7 @@ public class InMemoryHistoryManagerTest {
 
         Task retrievedTask = historyManager.getHistory().get(0);
         assertEquals(task1.getId(), retrievedTask.getId());
-        assertEquals(task1.getTitle(), retrievedTask.getTitle());
+        assertEquals(task1.getName(), retrievedTask.getName());
         assertEquals(task1.getDescription(), retrievedTask.getDescription());
         assertEquals(task1.getStatus(), retrievedTask.getStatus());
     }
@@ -41,14 +41,14 @@ public class InMemoryHistoryManagerTest {
         InMemoryTaskManager manager = new InMemoryTaskManager();
         Task task1 = new Task();
         task1.setId(1);
-        task1.setTitle("Title 1");
+        task1.setName("Title 1");
         task1.setDescription("Description 1");
         task1.setStatus(TaskStatus.NEW);
         manager.addTask(task1);
 
         Task updatedTask = new Task();
         updatedTask.setId(1);
-        updatedTask.setTitle("Title 1");
+        updatedTask.setName("Title 1");
         updatedTask.setDescription("Updated Description");
         updatedTask.setStatus(TaskStatus.NEW);
         manager.updateTask(updatedTask);
@@ -68,7 +68,7 @@ public class InMemoryHistoryManagerTest {
         // Попытка обновить несуществующую задачу
         Task updatedTask = new Task();
         updatedTask.setId(1);
-        updatedTask.setTitle("Title 1");
+        updatedTask.setName("Title 1");
         updatedTask.setDescription("Updated Description");
         updatedTask.setStatus(TaskStatus.NEW);
         manager.updateTask(updatedTask); // Обновляем несуществующую задачу
