@@ -127,7 +127,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         save();
     }
 
-    private void save() {
+    public void save() {
         try (BufferedWriter writer = new BufferedWriter((new FileWriter(file)))) {
             writer.write(CSVFormatter.getHeader());
             writer.newLine();
