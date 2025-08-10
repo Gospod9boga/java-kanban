@@ -20,28 +20,32 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
 
+            // Пропускаем заголовок
             reader.readLine();
 
             String line;
             while ((line = reader.readLine()) != null) {
                 if (line.trim().isEmpty()) continue;
 
-                Task task = CSVFormatter.toTaskConverter(line);
+                // Пробуем преобразовать строку в задачу
+                try {
+                    Task task = CSVFormatter.toTaskConverter(line);
 
-                if (task.getId() > maxId) {
-                    maxId = task.getId();
-                }
+                    if (task.getId() > maxId) {
+                        maxId = task.getId();
+                    }
 
-
-                if (task instanceof Epic) {
-                    taskManager.epics.put(task.getId(), (Epic) task);
-                } else if (task instanceof SubTask) {
-                    taskManager.subtasks.put(task.getId(), (SubTask) task);
-                } else {
-                    taskManager.tasks.put(task.getId(), task);
+                    if (task instanceof Epic) {
+                        taskManager.epics.put(task.getId(), (Epic) task);
+                    } else if (task instanceof SubTask) {
+                        taskManager.subtasks.put(task.getId(), (SubTask) task);
+                    } else {
+                        taskManager.tasks.put(task.getId(), task);
+                    }
+                } catch (IllegalArgumentException e) {
+                    System.err.println("Ошибка при обработке строки: " + line + ". " + e.getMessage());
                 }
             }
-
 
             taskManager.setNextId(maxId + 1);
 
@@ -53,6 +57,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         return taskManager;
     }
+
 
 
     @Override
