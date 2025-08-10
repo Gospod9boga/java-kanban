@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import task.Task;
 import task.TaskStatus;
 
-class TaskTest {  // Имя класса с заглавной буквы
+class TaskTest {
     private Task task1;
     private Task task2;
     private Task task3;
@@ -22,7 +22,7 @@ class TaskTest {  // Имя класса с заглавной буквы
     }
 
     @Test
-    void tasksTest1() {  // Имя метода начинается с маленькой буквы
+    void tasksTest1() {
         assertEquals(task1, task2);
         assertNotEquals(task1, task3);
     }

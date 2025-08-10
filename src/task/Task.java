@@ -1,12 +1,27 @@
 package task;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class Task {
     private int id;
     private TaskType type;
     private String name;
     private TaskStatus status;
     private String description;
+    private Duration duration;
+    private LocalDateTime startTime;
 
+    public Task(int id,  String name, TaskStatus status, String description, Duration duration, LocalDateTime startTime) {
+        this.id = id;
+        this.type = TaskType.TASK;
+        this.name = name;
+        this.status = status;
+        this.description = description;
+        this.duration = duration;
+        this.startTime = startTime;
+    }
 
     public Task(int id, String name, TaskStatus status, String description) {
         this.id = id;
@@ -18,6 +33,22 @@ public class Task {
 
     public Task() {
 
+    }
+
+    public void setDuration(Duration duration) {
+        this.duration = duration;
+    }
+
+    public void setStartTime(LocalDateTime startTime) {
+        this.startTime = startTime;
+    }
+
+    public Duration getDuration() {
+        return duration;
+    }
+
+    public LocalDateTime getStartTime() {
+        return startTime;
     }
 
     public TaskType getType() {
