@@ -206,7 +206,6 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
 
-
     //создание подзадачи
     @Override
     public void addSubtask(SubTask subtask) {
@@ -381,7 +380,7 @@ public class InMemoryTaskManager implements TaskManager {
     public boolean isOverlap(Task t1, Task t2) {
         if (t1.getStartTime() == null || t1.getDuration() == null ||
                 t2.getStartTime() == null || t2.getDuration() == null) {
-                        return false;
+            return false;
         }
 
         LocalDateTime start1 = t1.getStartTime();

@@ -1,7 +1,6 @@
 package task;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Task {
@@ -13,7 +12,7 @@ public class Task {
     private Duration duration;
     private LocalDateTime startTime;
 
-    public Task(int id,  String name, TaskStatus status, String description, Duration duration, LocalDateTime startTime) {
+    public Task(int id, String name, TaskStatus status, String description, Duration duration, LocalDateTime startTime) {
         this.id = id;
         this.type = TaskType.TASK;
         this.name = name;
