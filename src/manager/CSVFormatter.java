@@ -38,7 +38,6 @@ public class CSVFormatter {
     }
 
 
-
     public static Task toTaskConverter(String line) {
         if (line == null || line.trim().isEmpty()) {
             throw new IllegalArgumentException("Пустая строка");
