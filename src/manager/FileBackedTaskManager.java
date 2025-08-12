@@ -42,6 +42,11 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     } else {
                         taskManager.tasks.put(task.getId(), task);
                     }
+
+                    if (task.getStartTime() != null && task.getDuration() != null) {
+                        taskManager.taskQueue.add(task);
+                    }
+
                 } catch (IllegalArgumentException e) {
                     System.err.println("Ошибка при обработке строки: " + line + ". " + e.getMessage());
                 }
@@ -57,6 +62,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
         return taskManager;
     }
+
 
 
     @Override
