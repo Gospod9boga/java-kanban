@@ -43,7 +43,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                     }
 
                     if (task.getStartTime() != null && task.getDuration() != null) {
-                        taskManager.taskQueue.add(task);
+                        taskManager.priorityTasks.add(task);
                     }
 
                 } catch (IllegalArgumentException e) {
