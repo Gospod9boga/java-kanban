@@ -35,7 +35,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
         return cmp;
     };
-    protected Set<Task> taskQueue = new TreeSet<>(taskComparator);
+    protected Set<Task> priorityTasks = new TreeSet<>(taskComparator);
 
 
     public int getNextId() {
@@ -50,7 +50,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void addTask(Task task) {
         if (task.getStartTime() != null && task.getDuration() != null) {
-            boolean hasOverlap = taskQueue.stream()
+            boolean hasOverlap = priorityTasks.stream()
                     .anyMatch(existingTask -> isOverlap(existingTask, task));
 
             if (hasOverlap) {
@@ -59,7 +59,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
 
         task.setId(nextId++);
-        taskQueue.add(task);
+        priorityTasks.add(task);
         tasks.put(task.getId(), task);
     }
 
@@ -74,7 +74,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void updateTask(Task task) {
         if (tasks.containsKey(task.getId())) {
             Task oldTask = tasks.get(task.getId());
-            boolean hasOverlap = taskQueue.stream()
+            boolean hasOverlap = priorityTasks.stream()
                     .filter(existingTask -> !existingTask.equals(oldTask))
                     .anyMatch(existingTask -> isOverlap(existingTask, task));
 
@@ -83,8 +83,8 @@ public class InMemoryTaskManager implements TaskManager {
             }
 
             tasks.put(task.getId(), task);
-            taskQueue.remove(oldTask);
-            taskQueue.add(task);
+            priorityTasks.remove(oldTask);
+            priorityTasks.add(task);
         }
     }
 
@@ -110,7 +110,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteTaskById(int id) {
         Task task = tasks.remove(id);
         if (task != null) {
-            taskQueue.remove(task);
+            priorityTasks.remove(task);
         }
     }
 
@@ -134,6 +134,7 @@ public class InMemoryTaskManager implements TaskManager {
         epics.values().forEach(epic -> {
             epic.getSubTaskIds().forEach(subtaskId -> {
                 subtasks.remove(subtaskId);
+                priorityTasks.remove(subtasks.get(subtaskId));
             });
         });
         epics.clear();
@@ -158,10 +159,10 @@ public class InMemoryTaskManager implements TaskManager {
             epic.getSubTaskIds().stream()
                     .map(subtasks::remove)
                     .filter(subtask -> subtask != null)
-                    .forEach(taskQueue::remove);
+                    .forEach(priorityTasks::remove);
 
             epics.remove(id);
-            taskQueue.remove(epic);
+            priorityTasks.remove(epic);
         }
     }
 
@@ -181,7 +182,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void addSubtask(SubTask subtask) {
         if (subtask.getStartTime() != null && subtask.getDuration() != null) {
-            boolean hasOverlap = taskQueue.stream()
+            boolean hasOverlap = priorityTasks.stream()
                     .anyMatch(existingTask -> isOverlap(existingTask, subtask));
 
             if (hasOverlap) {
@@ -202,7 +203,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
 
         if (subtask.getStartTime() != null && subtask.getDuration() != null) {
-            taskQueue.add(subtask);
+            priorityTasks.add(subtask);
         }
     }
 
@@ -217,9 +218,8 @@ public class InMemoryTaskManager implements TaskManager {
     // Удаление всех подзадач
     @Override
     public void clearAllSubtask() {
-        subtasks.values().stream()
-                .peek(taskQueue::remove)
-                .forEach(subtask -> epics.values().forEach(epic -> epic.getSubTaskIds().remove(Integer.valueOf(subtask.getId()))));
+        epics.values().forEach(epic -> epic.getSubTaskIds().clear());
+        priorityTasks.clear();
         subtasks.clear();
         epics.values().forEach(epic -> updateEpicStatus(epic.getId()));
     }
@@ -237,16 +237,15 @@ public class InMemoryTaskManager implements TaskManager {
     // удаление по id подзадачу
     @Override
     public void deleteSubtaskById(int id) {
-        epics.values().stream()
-                .filter(epic -> epic.getSubTaskIds().remove(Integer.valueOf(id)))
-                .forEach(epic -> {
-                    updateEpicStatus(epic.getId());
-                    epic.updateTimeFields(getAllSubtasksForEpic(epic.getId()));
-                });
-
         SubTask removedSubtask = subtasks.remove(id);
         if (removedSubtask != null) {
-            taskQueue.remove(removedSubtask);
+            priorityTasks.remove(removedSubtask);
+            Epic epic = epics.get(removedSubtask.getEpicId());
+            if (epic != null) {
+                epic.getSubTaskIds().remove(Integer.valueOf(id));
+                updateEpicStatus(epic.getId());
+                epic.updateTimeFields(getAllSubtasksForEpic(epic.getId()));
+            }
         }
     }
 
@@ -262,7 +261,7 @@ public class InMemoryTaskManager implements TaskManager {
         SubTask oldSubtask = subtasks.get(subtask.getId());
 
         if (subtask.getStartTime() != null && subtask.getDuration() != null) {
-            boolean hasOverlap = taskQueue.stream()
+            boolean hasOverlap = priorityTasks.stream()
                     .filter(t -> t.getId() != subtask.getId())
                     .anyMatch(existingTask -> isOverlap(existingTask, subtask));
 
@@ -278,12 +277,12 @@ public class InMemoryTaskManager implements TaskManager {
             updateEpicStatus(epic.getId());
             epic.updateTimeFields(getAllSubtasksForEpic(epic.getId()));
 
-            taskQueue.remove(oldSubtask);
-            taskQueue.add(subtask);
+            priorityTasks.remove(oldSubtask);
+            priorityTasks.add(subtask);
 
-            taskQueue.remove(epic);
+            priorityTasks.remove(epic);
             if (epic.getStartTime() != null && epic.getDuration() != null) {
-                taskQueue.add(epic);
+                priorityTasks.add(epic);
             }
         }
     }
@@ -341,7 +340,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Task> getPrioritizedTasks() {
-        return new ArrayList<>(taskQueue);
+        return new ArrayList<>(priorityTasks);
     }
 
     public boolean isOverlap(Task t1, Task t2) {
