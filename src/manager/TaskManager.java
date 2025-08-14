@@ -66,4 +66,6 @@ public interface TaskManager {
     // Возврат последних 10 просмотренных Задач
     List<Task> getHistory();
 
+    List<Task> getPrioritizedTasks();
+
 }
