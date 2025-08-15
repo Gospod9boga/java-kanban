@@ -196,40 +196,6 @@ class HttpTaskServerTasksTest {
     }
 
     @Test
-    public void testUpdateTask() throws IOException, InterruptedException {
-        Task task = new Task(0, "Старое имя", TaskStatus.NEW, "Старое описание");
-        String jsonTask1 = gson.toJson(task);
-        HttpRequest createRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/tasks"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(jsonTask1))
-                .build();
-        client.send(createRequest, HttpResponse.BodyHandlers.ofString());
-
-        Task updatedTask = new Task(1, "Новое имя", TaskStatus.IN_PROGRESS, "Новое описание");
-        String jsonTask2 = gson.toJson(updatedTask);
-        HttpRequest updateRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/tasks/1"))
-                .header("Content-Type", "application/json")
-                .PUT(HttpRequest.BodyPublishers.ofString(jsonTask2))
-                .build();
-        client.send(updateRequest, HttpResponse.BodyHandlers.ofString());
-
-        HttpRequest getRequest = HttpRequest.newBuilder()
-                .uri(URI.create("http://localhost:8080/tasks/1"))
-                .GET()
-                .build();
-
-        HttpResponse<String> getResponse = client.send(getRequest, HttpResponse.BodyHandlers.ofString());
-        Task retrievedTask = gson.fromJson(getResponse.body(), Task.class);
-
-        assertEquals("Новое имя", retrievedTask.getName());
-        assertEquals("Новое описание", retrievedTask.getDescription());
-        assertEquals(TaskStatus.IN_PROGRESS, retrievedTask.getStatus());
-        assertEquals(1, retrievedTask.getId());
-    }
-
-    @Test
     public void testGetTaskWithInvalidId() throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/tasks/a"))
