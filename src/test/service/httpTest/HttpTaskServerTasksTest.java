@@ -1,6 +1,7 @@
 package test.service.httpTest;
 
 import com.google.gson.Gson;
+import http.BaseHttpHandler;
 import http.server.HttpTaskServer;
 import manager.Managers;
 import manager.TaskManager;
@@ -32,7 +33,7 @@ class HttpTaskServerTasksTest {
     public void setUp() throws IOException {
         manager = Managers.getDefault();
         server = new HttpTaskServer(manager);
-        gson = server.getGson();
+        gson = BaseHttpHandler.GSON;
         server.start();
         client = HttpClient.newHttpClient();
     }

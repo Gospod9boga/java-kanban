@@ -14,13 +14,22 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class BaseHttpHandler {
-    private final Gson gson = new GsonBuilder()
+    protected static final String GET = "GET";
+    protected static final String POST = "POST";
+    protected static final String DELETE = "DELETE";
+
+    protected static final int OK = 200;
+    protected static final int CREATED = 201;
+    protected static final int BAD_REQUEST = 400;
+    protected static final int NOT_FOUND = 404;
+    protected static final int NOT_ACCEPTABLE = 406;
+
+    public static final Gson GSON = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .registerTypeAdapter(Duration.class, new DurationAdapter())
             .create();
 
-
-    private void sendResponse(HttpExchange exchange, int statusCode, String contentType, String body) throws IOException {
+    protected void sendResponse(HttpExchange exchange, int statusCode, String contentType, String body) throws IOException {
         exchange.getResponseHeaders().set("Content-Type", contentType);
         byte[] bytes = body.getBytes(StandardCharsets.UTF_8);
         exchange.sendResponseHeaders(statusCode, bytes.length);
@@ -28,41 +37,36 @@ public class BaseHttpHandler {
         exchange.close();
     }
 
-    void sendTextOk(HttpExchange exchange, Object responseObject) throws IOException {
+    protected void sendTextOk(HttpExchange exchange, Object responseObject) throws IOException {
         if (responseObject instanceof String) {
-            sendResponse(exchange, 200, "text/plain; charset=UTF-8", (String) responseObject);
+            sendResponse(exchange, OK, "text/plain; charset=UTF-8", (String) responseObject);
         } else {
-            sendResponse(exchange, 200, "application/json; charset=UTF-8", gson.toJson(responseObject));
+            sendResponse(exchange, OK, "application/json; charset=UTF-8", GSON.toJson(responseObject));
         }
     }
 
-    void sendIdNotFound(HttpExchange exchange, int id) throws IOException {
-        sendResponse(exchange, 404, "text/plain; charset=UTF-8", "Задача с id " + id + " не найдена");
+    protected void sendIdNotFound(HttpExchange exchange, int id) throws IOException {
+        sendResponse(exchange, NOT_FOUND, "text/plain; charset=UTF-8", "Задача с id " + id + " не найдена");
     }
 
-    void sendIncorrectId(HttpExchange exchange, String id) throws IOException {
-        sendResponse(exchange, 400, "text/plain; charset=UTF-8", "Некорректный id: " + id);
+    protected void sendIncorrectId(HttpExchange exchange, String id) throws IOException {
+        sendResponse(exchange, BAD_REQUEST, "text/plain; charset=UTF-8", "Некорректный id: " + id);
     }
 
-    void sendTextCreatedOk(HttpExchange exchange, String response) throws IOException {
-        sendResponse(exchange, 201, "text/plain; charset=UTF-8", response);
+    protected void sendTextCreatedOk(HttpExchange exchange, String response) throws IOException {
+        sendResponse(exchange, CREATED, "text/plain; charset=UTF-8", response);
     }
 
-    void sendHasOverlaps(HttpExchange exchange) throws IOException {
-        sendResponse(exchange, 406, "text/plain; charset=UTF-8", "Задача пересекается с существующими");
+    protected void sendHasOverlaps(HttpExchange exchange) throws IOException {
+        sendResponse(exchange, NOT_ACCEPTABLE, "text/plain; charset=UTF-8", "Задача пересекается с существующими");
     }
 
-    // Адаптеры для Gson
     public static class LocalDateTimeAdapter extends TypeAdapter<LocalDateTime> {
         private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
 
         @Override
         public void write(JsonWriter out, LocalDateTime value) throws IOException {
-            if (value == null) {
-                out.nullValue();
-            } else {
-                out.value(value.format(formatter));
-            }
+            out.value(value != null ? value.format(formatter) : null);
         }
 
         @Override
@@ -74,11 +78,7 @@ public class BaseHttpHandler {
     public static class DurationAdapter extends TypeAdapter<Duration> {
         @Override
         public void write(JsonWriter out, Duration value) throws IOException {
-            if (value == null) {
-                out.nullValue();
-            } else {
-                out.value(value.toString());
-            }
+            out.value(value != null ? value.toString() : null);
         }
 
         @Override

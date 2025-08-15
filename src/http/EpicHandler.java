@@ -2,7 +2,6 @@ package http;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import com.google.gson.Gson;
 import manager.TaskManager;
 import task.Epic;
 import task.SubTask;
@@ -13,11 +12,9 @@ import java.util.List;
 
 public class EpicHandler extends BaseHttpHandler implements HttpHandler {
     private final TaskManager manager;
-    private final Gson gson;
 
-    public EpicHandler(TaskManager manager, Gson gson) {
+    public EpicHandler(TaskManager manager) {
         this.manager = manager;
-        this.gson = gson;
     }
 
     @Override
@@ -26,52 +23,74 @@ public class EpicHandler extends BaseHttpHandler implements HttpHandler {
         String path = exchange.getRequestURI().getPath();
         String[] pathParts = path.split("/");
 
-        if (method.equals("GET")) {
-            if (pathParts.length == 2) {
-                List<Epic> epics = manager.getAllEpics();
-                sendTextOk(exchange, epics);
-
-            } else if (pathParts.length == 3) {
-                try {
-                    int id = Integer.parseInt(pathParts[2]);
-                    Epic epic = manager.getEpic(id);
-                    if (epic != null) {
-                        sendTextOk(exchange, epic);
-                    } else {
-                        sendIdNotFound(exchange, id);
-                    }
-                } catch (NumberFormatException e) {
-                    sendIncorrectId(exchange, pathParts[2]);
-                }
-            } else if (pathParts.length == 4 && pathParts[3].equals("subtasks")) {
-                try {
-                    int id = Integer.parseInt(pathParts[2]);
-                    Epic epic = manager.getEpic(id);
-                    if (epic != null) {
-                        List<SubTask> jsonResponse = manager.getAllSubtasksForEpic(id);
-                        sendTextOk(exchange, jsonResponse);
-                    } else {
-                        sendIdNotFound(exchange, id);
-                    }
-                } catch (NumberFormatException e) {
-                    sendIncorrectId(exchange, pathParts[2]);
-                }
+        try {
+            switch (method) {
+                case GET:
+                    handleGetRequest(exchange, pathParts);
+                    break;
+                case POST:
+                    handlePostRequest(exchange);
+                    break;
+                case DELETE:
+                    handleDeleteRequest(exchange, pathParts);
+                    break;
+                default:
+                    sendResponse(exchange, 405, "text/plain; charset=UTF-8", "Метод не поддерживается");
             }
-        } else if (method.equals("POST")) {
-            InputStream inputStream = exchange.getRequestBody();
-            String body = new String(inputStream.readAllBytes());
-            Epic epic = gson.fromJson(body, Epic.class);
-            manager.addEpic(epic);
-            sendTextCreatedOk(exchange, "tasks.Epic успешно создан");
-        } else if (method.equals("DELETE")) {
-            if (pathParts.length == 3) {
+        } catch (Exception e) {
+            sendResponse(exchange, 500, "text/plain; charset=UTF-8", "Внутренняя ошибка сервера");
+        }
+    }
+
+    private void handleGetRequest(HttpExchange exchange, String[] pathParts) throws IOException {
+        if (pathParts.length == 2) {
+            List<Epic> epics = manager.getAllEpics();
+            sendTextOk(exchange, epics);
+        } else if (pathParts.length == 3) {
+            try {
                 int id = Integer.parseInt(pathParts[2]);
-                try {
-                    manager.deleteEpicById(id);
-                    sendTextOk(exchange, "tasks.Epic успешно удален");
-                } catch (NumberFormatException e) {
+                Epic epic = manager.getEpic(id);
+                if (epic != null) {
+                    sendTextOk(exchange, epic);
+                } else {
                     sendIdNotFound(exchange, id);
                 }
+            } catch (NumberFormatException e) {
+                sendIncorrectId(exchange, pathParts[2]);
+            }
+        } else if (pathParts.length == 4 && pathParts[3].equals("subtasks")) {
+            try {
+                int id = Integer.parseInt(pathParts[2]);
+                Epic epic = manager.getEpic(id);
+                if (epic != null) {
+                    List<SubTask> subtasks = manager.getAllSubtasksForEpic(id);
+                    sendTextOk(exchange, subtasks);
+                } else {
+                    sendIdNotFound(exchange, id);
+                }
+            } catch (NumberFormatException e) {
+                sendIncorrectId(exchange, pathParts[2]);
+            }
+        }
+    }
+
+    private void handlePostRequest(HttpExchange exchange) throws IOException {
+        try (InputStream inputStream = exchange.getRequestBody()) {
+            String body = new String(inputStream.readAllBytes());
+            Epic epic = GSON.fromJson(body, Epic.class);
+            manager.addEpic(epic);
+            sendTextCreatedOk(exchange, "Epic успешно создан");
+        }
+    }
+
+    private void handleDeleteRequest(HttpExchange exchange, String[] pathParts) throws IOException {
+        if (pathParts.length == 3) {
+            try {
+                int id = Integer.parseInt(pathParts[2]);
+                manager.deleteEpicById(id);
+                sendTextOk(exchange, "Epic успешно удален");
+            } catch (NumberFormatException e) {
+                sendIncorrectId(exchange, pathParts[2]);
             }
         }
     }

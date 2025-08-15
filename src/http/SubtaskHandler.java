@@ -2,7 +2,6 @@ package http;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
-import com.google.gson.Gson;
 import manager.TaskManager;
 import task.SubTask;
 
@@ -12,11 +11,9 @@ import java.util.List;
 
 public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
     private final TaskManager manager;
-    private final Gson gson;
 
-    public SubtaskHandler(TaskManager manager, Gson gson) {
+    public SubtaskHandler(TaskManager manager) {
         this.manager = manager;
-        this.gson = gson;
     }
 
     @Override
@@ -26,7 +23,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
         String[] pathParts = path.split("/");
         boolean hasId = pathParts.length > 2;
 
-        if (method.equals("GET")) {
+        if (method.equals(GET)) {
             if (hasId) {
                 try {
                     int id = Integer.parseInt(pathParts[2]);
@@ -43,10 +40,10 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                 List<SubTask> subtasks = manager.getAllSubtasks();
                 sendTextOk(exchange, subtasks);
             }
-        } else if (method.equals("POST")) {
+        } else if (method.equals(POST)) {
             InputStream inputStream = exchange.getRequestBody();
             String body = new String(inputStream.readAllBytes());
-            SubTask subtask = gson.fromJson(body, SubTask.class);
+            SubTask subtask = GSON.fromJson(body, SubTask.class);
             if (subtask.getId() == 0) {
                 try {
                     manager.addSubtask(subtask);
@@ -63,7 +60,7 @@ public class SubtaskHandler extends BaseHttpHandler implements HttpHandler {
                     sendHasOverlaps(exchange);
                 }
             }
-        } else if (method.equals("DELETE")) {
+        } else if (method.equals(DELETE)) {
             if (hasId) {
                 try {
                     int id = Integer.parseInt(pathParts[2]);

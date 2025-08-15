@@ -1,6 +1,7 @@
 package test.service.httpTest;
 
 import com.google.gson.Gson;
+import http.BaseHttpHandler;
 import http.server.HttpTaskServer;
 import manager.Managers;
 import manager.TaskManager;
@@ -30,7 +31,7 @@ class HttpTaskServerEpicsTest {
     public void setUp() throws IOException {
         manager = Managers.getDefault();
         server = new HttpTaskServer(manager);
-        gson = server.getGson();
+        gson = BaseHttpHandler.GSON;
         server.start();
         client = HttpClient.newHttpClient();
     }
@@ -70,11 +71,7 @@ class HttpTaskServerEpicsTest {
         assertTrue(response.body().contains("успешно создан"),
                 "Ответ должен содержать сообщение об успешном создании");
 
-        assertEquals("tasks.Epic успешно создан", response.body());
-
-        String expected = "Epic успешно создан";
-        String actual = response.body().replace("tasks.", "");
-        assertEquals(expected, actual);
+        assertEquals("Epic успешно создан", response.body());
     }
 
     @Test
@@ -134,7 +131,7 @@ class HttpTaskServerEpicsTest {
         HttpResponse<String> createResponse = client.send(createRequest, HttpResponse.BodyHandlers.ofString());
         assertEquals(201, createResponse.statusCode());
 
-        assertEquals("tasks.Epic успешно создан", createResponse.body().trim());
+        assertEquals("Epic успешно создан", createResponse.body().trim());
 
         HttpRequest getAllRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/epics"))
@@ -155,7 +152,7 @@ class HttpTaskServerEpicsTest {
         HttpResponse<String> deleteResponse = client.send(deleteRequest, HttpResponse.BodyHandlers.ofString());
 
         assertEquals(200, deleteResponse.statusCode());
-        assertEquals("tasks.Epic успешно удален", deleteResponse.body().trim());
+        assertEquals("Epic успешно удален", deleteResponse.body().trim());
 
         HttpRequest getRequest = HttpRequest.newBuilder()
                 .uri(URI.create("http://localhost:8080/epics/" + epicId))
